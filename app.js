@@ -5,8 +5,9 @@ async function loadDecades() {
   const grid = document.getElementById('decade-grid');
 
   decades.forEach(decade => {
-    const card = document.createElement('div');
+    const card = document.createElement('a');
     card.className = 'card';
+    card.href = `pages/decade.html?decade=${encodeURIComponent(decade.slug)}`;
 
     card.innerHTML = `
       <h3>${decade.title}</h3>

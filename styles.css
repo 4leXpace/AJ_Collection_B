@@ -47,3 +47,12 @@ nav a {
   border: 1px solid #333;
   cursor: pointer;
 }
+.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  border-color: #666;
+}
