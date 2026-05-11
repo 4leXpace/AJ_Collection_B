@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Decade Archive</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero-content">
-    <h1 id="decade-title">Decade Archive</h1>
-  </div>
-</header>
+<h1 id="decade-title" style="padding:40px;">Loading...</h1>
 
-<section class="section">
-  <p><a href="../index.html">← Back to home</a></p>
-</section>
+<p style="padding:0 40px;">
+  <a href="../index.html">← Back to home</a>
+</p>
+
+<div id="concert-list" style="padding:40px;"></div>
 
 <script>
+async function loadConcerts() {
   const params = new URLSearchParams(window.location.search);
-  const decade = params.get('decade');
+  const decadeSlug = params.get('decade');
 
-  if (decade) {
-    document.getElementById('decade-title').textContent = decodeURIComponent(decade);
-    document.title = decodeURIComponent(decade);
+  if (!decadeSlug) {
+    document.getElementById('decade-title').textContent =
+      'No decade selected';
+    return;
   }
+
+  document.getElementById('decade-title').textContent =
+    decodeURIComponent(decadeSlug);
+
+  const response = await fetch('../data/concerts.json');
+  const concerts = await response.json();
+
+  const filtered = concerts.filter(concert =>
+    concert.decade === decadeSlug ||
+    concert.decade_slug === decadeSlug
+  );
+
+  const container = document.getElementById('concert-list');
+
+  if (filtered.length === 0) {
+    container.innerHTML =
+      '<p>No concerts found for this decade.</p>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(concert => `
+    <div class="card" style="margin-bottom:20px;">
+      <h3>${concert.date || ''}</h3>
+      <p>${concert.city || ''} ${concert.venue ? '- ' + concert.venue : ''}</p>
+    </div>
+  `).join('');
+}
+
+loadConcerts();
 </script>
 
 </body>
