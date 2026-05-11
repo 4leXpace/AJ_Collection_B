@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Decade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decade Archive</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<h1>Decade Archive</h1>
+
+<header class="hero">
+  <div class="hero-content">
+    <h1 id="decade-title">Decade Archive</h1>
+  </div>
+</header>
+
+<section class="section">
+  <p><a href="../index.html">← Back to home</a></p>
+</section>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const decade = params.get('decade');
+
+  if (decade) {
+    document.getElementById('decade-title').textContent = decodeURIComponent(decade);
+    document.title = decodeURIComponent(decade);
+  }
+</script>
+
 </body>
 </html>
